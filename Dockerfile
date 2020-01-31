@@ -4,7 +4,7 @@ FROM debian:stretch
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install -y apt-utils vim xterm pulseaudio cups curl mate-desktop-environment-core
+RUN apt-get update && apt-get install -y apt-utils vim xterm pulseaudio openbox curl
 
 # Installation of ssh is required if you want to connect to NoMachine server using SSH protocol when supported.
 # Comment it out if you don't need it or if you use NoMachine free.
