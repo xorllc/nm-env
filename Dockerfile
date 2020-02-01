@@ -31,4 +31,7 @@ RUN \
 
 ADD nxserver.sh /
 
+COPY .vim/ /home/nomachine/.vim/
+COPY .vimrc /home/nomachine/.vimrc
+
 ENTRYPOINT ["/nxserver.sh"]
