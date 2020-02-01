@@ -35,6 +35,7 @@ RUN \
     && make install
 
 COPY .xsessionrc /home/nomachine/.xsessionrc
+COPY Inconsolata-g.ttf /home/nomachine/.local/share/fonts/Inconsolata-g.ttf
 
 ADD nxserver.sh /
 
