@@ -1,0 +1,15 @@
+
+
+The key here turned out to be the PKG_CONFIG_PATH environment variable. This was empty on a standard shell session on my system.
+
+There seem to be lots of directories with pkgconfig in the name, but to find the correct one I was able to use apt-file per this thread i.e.
+
+$ apt-file search fontconfig.pc
+libfontconfig1-dev: /usr/lib/x86_64-linux-gnu/pkgconfig/fontconfig.pc
+
+Then run
+
+export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig
+
+And now the ./configure step can find the .pc file which it requires for that library. Learning about apt-file seems to be a useful outcome of this problem.
+

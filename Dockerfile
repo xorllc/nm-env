@@ -4,17 +4,12 @@ FROM debian:stretch
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install -y apt-utils vim xterm pulseaudio openbox curl
-
-# Installation of ssh is required if you want to connect to NoMachine server using SSH protocol when supported.
-# Comment it out if you don't need it or if you use NoMachine free.
-
-RUN apt-get install -y ssh \
-&& service ssh start
+RUN apt-get update && apt-get install -y apt-utils vim xterm pulseaudio curl
 
 ENV NOMACHINE_VERSION 6.9
 ENV NOMACHINE_PACKAGE_NAME nomachine_6.9.2_1_amd64.deb
 ENV NOMACHINE_MD5 86fe9a0f9ee06ee6fce41aa36674f727
+
 
 RUN curl -fSL "http://download.nomachine.com/download/${NOMACHINE_VERSION}/Linux/${NOMACHINE_PACKAGE_NAME}" -o nomachine.deb \
 && echo "Expected MD5:" ${NOMACHINE_MD5} \
@@ -25,6 +20,14 @@ RUN curl -fSL "http://download.nomachine.com/download/${NOMACHINE_VERSION}/Linux
 && mkdir /home/nomachine \
 && chown -R nomachine:nomachine /home/nomachine \
 && echo 'nomachine:nomachine' | chpasswd
+
+RUN apt-get install gcc libx11-dev libxft-dev make pkg-config libfontconfig1-dev libfreetype6-dev -y
+
+COPY st/ /home/nomachine/st/
+
+RUN \
+       cd /home/nomachine/st/ \
+    && make install
 
 ADD nxserver.sh /
 
