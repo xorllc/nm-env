@@ -1,16 +1,21 @@
-# Dockerfile to install NoMachine free v. 6 with MATE interface
+# Dockerfile to install NoMachine with suckless tools.
 FROM debian:stretch
 
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install -y apt-utils vim xterm pulseaudio curl
+RUN \
+          apt-get update \
+      &&  apt-get upgrade -y \
+      &&  apt-get install -y \
+            gcc make vim curl git \
+            libxinerama-dev libx11-dev libxft-dev \
+            pkg-config libfontconfig1-dev libfreetype6-dev \
+            apt-utils pulseaudio
 
 ENV NOMACHINE_VERSION 6.9
 ENV NOMACHINE_PACKAGE_NAME nomachine_6.9.2_1_amd64.deb
 ENV NOMACHINE_MD5 86fe9a0f9ee06ee6fce41aa36674f727
-
-RUN apt-get install gcc libxinerama-dev libx11-dev libxft-dev make pkg-config libfontconfig1-dev libfreetype6-dev -y
 
 RUN curl -fSL "http://download.nomachine.com/download/${NOMACHINE_VERSION}/Linux/${NOMACHINE_PACKAGE_NAME}" -o nomachine.deb \
 && echo "Expected MD5:" ${NOMACHINE_MD5} \
