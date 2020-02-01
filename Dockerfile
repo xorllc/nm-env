@@ -11,7 +11,8 @@ RUN \
             gcc make vim curl git \
             libxinerama-dev libx11-dev libxft-dev \
             pkg-config libfontconfig1-dev libfreetype6-dev \
-            apt-utils pulseaudio
+            apt-utils pulseaudio \
+            libgtk-3-dev libglib2.0-dev webkit2gtk-4.0
 
 ENV NOMACHINE_VERSION 6.9
 ENV NOMACHINE_PACKAGE_NAME nomachine_6.9.2_1_amd64.deb
@@ -28,16 +29,20 @@ RUN curl -fSL "http://download.nomachine.com/download/${NOMACHINE_VERSION}/Linux
 && echo 'nomachine:nomachine' | chpasswd
 
 COPY st/ /home/nomachine/st/
-
 RUN \
        cd /home/nomachine/st/ \
     && make install
 
 COPY dwm/ /home/nomachine/dwm/
-
 RUN \
        cd /home/nomachine/dwm/ \
     && make install
+
+COPY vimb/ /home/nomachine/vimb/
+RUN \
+       cd /home/nomachine/vimb/ \
+    && make PREFIX=/usr \
+    && make PREFIX=/usr install
 
 COPY .xsessionrc /home/nomachine/.xsessionrc
 COPY Inconsolata-g.ttf /home/nomachine/.local/share/fonts/Inconsolata-g.ttf
