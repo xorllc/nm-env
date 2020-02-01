@@ -10,6 +10,7 @@ ENV NOMACHINE_VERSION 6.9
 ENV NOMACHINE_PACKAGE_NAME nomachine_6.9.2_1_amd64.deb
 ENV NOMACHINE_MD5 86fe9a0f9ee06ee6fce41aa36674f727
 
+RUN apt-get install gcc libxinerama-dev libx11-dev libxft-dev make pkg-config libfontconfig1-dev libfreetype6-dev -y
 
 RUN curl -fSL "http://download.nomachine.com/download/${NOMACHINE_VERSION}/Linux/${NOMACHINE_PACKAGE_NAME}" -o nomachine.deb \
 && echo "Expected MD5:" ${NOMACHINE_MD5} \
@@ -21,13 +22,19 @@ RUN curl -fSL "http://download.nomachine.com/download/${NOMACHINE_VERSION}/Linux
 && chown -R nomachine:nomachine /home/nomachine \
 && echo 'nomachine:nomachine' | chpasswd
 
-RUN apt-get install gcc libx11-dev libxft-dev make pkg-config libfontconfig1-dev libfreetype6-dev -y
-
 COPY st/ /home/nomachine/st/
 
 RUN \
        cd /home/nomachine/st/ \
     && make install
+
+COPY dwm/ /home/nomachine/dwm/
+
+RUN \
+       cd /home/nomachine/dwm/ \
+    && make install
+
+COPY .xsessionrc /home/nomachine/.xsessionrc
 
 ADD nxserver.sh /
 
