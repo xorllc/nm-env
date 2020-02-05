@@ -12,7 +12,9 @@ RUN \
             libxinerama-dev libx11-dev libxft-dev \
             pkg-config libfontconfig1-dev libfreetype6-dev \
             apt-utils pulseaudio \
-            libgtk-3-dev libglib2.0-dev webkit2gtk-4.0
+            libgtk-3-dev libglib2.0-dev webkit2gtk-4.0 \
+            feh \
+            man
 
 ENV NOMACHINE_VERSION 6.9
 ENV NOMACHINE_PACKAGE_NAME nomachine_6.9.2_1_amd64.deb
@@ -28,28 +30,32 @@ RUN curl -fSL "http://download.nomachine.com/download/${NOMACHINE_VERSION}/Linux
 && chown -R nomachine:nomachine /home/nomachine \
 && echo 'nomachine:nomachine' | chpasswd
 
-COPY st/ /home/nomachine/st/
-RUN \
-       cd /home/nomachine/st/ \
-    && make install
+# Compile user tools and add dotfiles.
+WORKDIR /home/nomachine/
 
-COPY dwm/ /home/nomachine/dwm/
-RUN \
-       cd /home/nomachine/dwm/ \
-    && make install
+# Suckless' terminal.
+COPY --chown=nomachine st/ st/
+RUN  cd st && make install && cd -
 
-COPY vimb/ /home/nomachine/vimb/
-RUN \
-       cd /home/nomachine/vimb/ \
-    && make PREFIX=/usr \
-    && make PREFIX=/usr install
+# Suckless' window manager.
+COPY --chown=nomachine dwm/ dwm/
+RUN cd dwm/ && make install && cd -
 
-COPY .xsessionrc /home/nomachine/.xsessionrc
-COPY Inconsolata-g.ttf /home/nomachine/.local/share/fonts/Inconsolata-g.ttf
+# A modal web browser.
+COPY --chown=nomachine vimb/ vimb/
+RUN cd vimb/ && make PREFIX=/usr && make PREFIX=/usr install && cd -
 
+# Install wallpapers.
+COPY wallpapers/ wallpapers/
+
+# Other dotfiles.
+COPY --chown=nomachine .xsessionrc .xsessionrc
+COPY --chown=nomachine .fehbg .fehbg
+COPY --chown=nomachine .vim/ .vim/
+COPY --chown=nomachine .vimrc .vimrc
+COPY --chown=nomachine Inconsolata-g.ttf .local/share/fonts/Inconsolata-g.ttf
+
+WORKDIR /
 ADD nxserver.sh /
-
-COPY .vim/ /home/nomachine/.vim/
-COPY .vimrc /home/nomachine/.vimrc
 
 ENTRYPOINT ["/nxserver.sh"]
