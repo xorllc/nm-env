@@ -86,39 +86,33 @@ unsigned int tabspaces = 8;
 /* bg opacity */
 float alpha = 0.92;
 
+/* Iceberg color scheme. */
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
-	"#282828", /* hard contrast: #1d2021 / soft contrast: #32302f */
-	"#cc241d",
-	"#98971a",
-	"#d79921",
-	"#458588",
-	"#b16286",
-	"#689d6a",
-	"#a89984",
-	"#928374",
-	"#fb4934",
-	"#b8bb26",
-	"#fabd2f",
-	"#83a598",
-	"#d3869b",
-	"#8ec07c",
-	"#ebdbb2",
-	[255] = 0,
-	/* more colors can be added after 255 to use with DefaultXX */
-	"#282828",   /* 256 -> bg */
-	"#ebdbb2",   /* 257 -> fg */
-	"#add8e6", /* 258 -> cursor */
+  /* 8 normal colors */
+  "#161821", /* black   */
+  "#e27878", /* red     */
+  "#b4be82", /* green   */
+  "#e2a478", /* yellow  */
+  "#84a0c6", /* blue    */
+  "#a093c7", /* magenta */
+  "#89b8c2", /* cyan    */
+  "#c6c8d1", /* white   */
+
+  /* 8 bright colors */
+  "#6b7089", /* black   */
+  "#e98989", /* red     */
+  "#c0ca8e", /* green   */
+  "#e9b189", /* yellow  */
+  "#91acd1", /* blue    */
+  "#ada0d3", /* magenta */
+  "#95c4ce", /* cyan    */
+  "#d2d4de", /* white   */
 };
 
-
-/*
- * Default colors (colorname index)
- * foreground, background, cursor, reverse cursor
- */
-unsigned int defaultfg = 257;
-unsigned int defaultbg = 256;
-static unsigned int defaultcs = 258;
+unsigned int defaultfg = 7;
+unsigned int defaultbg = 0;
+static unsigned int defaultcs = 7;
 static unsigned int defaultrcs = 0;
 
 /*

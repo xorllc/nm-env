@@ -53,6 +53,8 @@ COPY --chown=nomachine .xsessionrc .xsessionrc
 COPY --chown=nomachine .fehbg .fehbg
 COPY --chown=nomachine .vim/ .vim/
 COPY --chown=nomachine .vimrc .vimrc
+COPY --chown=nomachine .bashrc .bashrc
+COPY --chown=nomachine .bash_profile .bash_profile
 COPY --chown=nomachine Inconsolata-g.ttf .local/share/fonts/Inconsolata-g.ttf
 
 WORKDIR /
