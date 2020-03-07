@@ -1,7 +1,8 @@
 # Dockerfile to install NoMachine with suckless tools.
 FROM debian:buster
 
-
+ENV NM_USER=nomachine
+ENV NM_GROUP=nomachine
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN \
@@ -14,7 +15,10 @@ RUN \
             apt-utils pulseaudio \
             libgtk-3-dev libglib2.0-dev webkit2gtk-4.0 \
             feh \
-            man
+            man \
+      &&  apt-get clean -y \
+      &&  apt-get autoclean -y \
+      &&  apt-get autoremove -y
 
 ENV NOMACHINE_VERSION 6.9
 ENV NOMACHINE_PACKAGE_NAME nomachine_6.9.2_1_amd64.deb
@@ -24,38 +28,38 @@ RUN curl -fSL "http://download.nomachine.com/download/${NOMACHINE_VERSION}/Linux
 && echo "Expected MD5:" ${NOMACHINE_MD5} \
 && echo "${NOMACHINE_MD5} *nomachine.deb" | md5sum -c - \
 && dpkg -i nomachine.deb \
-&& groupadd -r nomachine -g 433 \
-&& useradd -u 431 -r -g nomachine -d /home/nomachine -s /bin/bash -c "NoMachine" nomachine \
-&& mkdir /home/nomachine \
-&& chown -R nomachine:nomachine /home/nomachine \
-&& echo 'nomachine:nomachine' | chpasswd
+&& groupadd -r ${NM_GROUP} -g 433 \
+&& useradd -u 431 -r -g ${NM_GROUP} -d /home/${NM_USER} -s /bin/bash -c "NoMachine" ${NM_USER} \
+&& mkdir /home/${NM_USER} \
+&& chown -R ${NM_USER}:${NM_USER} /home/${NM_USER} \
+&& echo "${NM_USER}:${NM_USER}" | chpasswd
 
 # Compile user tools and add dotfiles.
-WORKDIR /home/nomachine/
+WORKDIR /home/${NM_USER}/
 
 # Suckless' terminal.
-COPY --chown=nomachine st/ st/
+COPY --chown=${NM_USER} st/ st/
 RUN  cd st && make install && cd -
 
 # Suckless' window manager.
-COPY --chown=nomachine dwm/ dwm/
+COPY --chown=${NM_USER} dwm/ dwm/
 RUN cd dwm/ && make install && cd -
 
 # A modal web browser.
-COPY --chown=nomachine vimb/ vimb/
+COPY --chown=${NM_USER} vimb/ vimb/
 RUN cd vimb/ && make PREFIX=/usr && make PREFIX=/usr install && cd -
 
 # Install wallpapers.
 COPY wallpapers/ wallpapers/
 
 # Other dotfiles.
-COPY --chown=nomachine .xsessionrc .xsessionrc
-COPY --chown=nomachine .fehbg .fehbg
-COPY --chown=nomachine .vim/ .vim/
-COPY --chown=nomachine .vimrc .vimrc
-COPY --chown=nomachine .bashrc .bashrc
-COPY --chown=nomachine .bash_profile .bash_profile
-COPY --chown=nomachine Inconsolata-g.ttf .local/share/fonts/Inconsolata-g.ttf
+COPY --chown=${NM_USER} .xsessionrc .xsessionrc
+COPY --chown=${NM_USER} .fehbg .fehbg
+COPY --chown=${NM_USER} .vim/ .vim/
+COPY --chown=${NM_USER} .vimrc .vimrc
+COPY --chown=${NM_USER} .bashrc .bashrc
+COPY --chown=${NM_USER} .bash_profile .bash_profile
+COPY --chown=${NM_USER} Inconsolata-g.ttf .local/share/fonts/Inconsolata-g.ttf
 
 WORKDIR /
 ADD nxserver.sh /
