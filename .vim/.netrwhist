@@ -1,0 +1,3 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =1
+let g:netrw_dirhist_1='/media/onyx-dragoon/7af91ebc-a135-42c1-92e3-cfb8e5988579/newplus/gitmisc/docker-dotfiles/x11docker'
