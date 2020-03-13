@@ -69,6 +69,12 @@ COPY --chown=${NM_USER} .bashrc .bashrc
 COPY --chown=${NM_USER} .bash_profile .bash_profile
 COPY --chown=${NM_USER} Inconsolata-g.ttf .local/share/fonts/Inconsolata-g.ttf
 
+# NES emulator.
+COPY --chown=${NM_USER} bjne/ bjne/
+RUN apt-get install scons libsdl1.2-dev libboost-all-dev build-essential -y
+RUN cd bjne/ && scons && cd -
+
+
 WORKDIR /
 ADD nxserver.sh /
 
