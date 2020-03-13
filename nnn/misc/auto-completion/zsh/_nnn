@@ -1,0 +1,37 @@
+#compdef nnn
+#
+# Completion definition for nnn.
+#
+# Author:
+#   Arun Prakash Jana <engineerarun@gmail.com>
+#
+
+setopt localoptions noshwordsplit noksharrays
+local -a args
+args=(
+    '(-a)-a[use access time]'
+    '(-A)-A[disable dir auto-select]'
+    '(-b)-b[bookmark key to open]:key char'
+    '(-c)-c[cli-only opener]'
+    '(-d)-d[start in detail mode]'
+    '(-e)-e[open text files in $VISUAL/$EDITOR/vi]'
+    '(-E)-E[use EDITOR for undetached edits]'
+    '(-g)-g[regex filters]'
+    '(-H)-H[show hidden files]'
+    '(-K)-K[detect key collision]'
+    '(-n)-n[start in navigate-as-you-type mode]'
+    '(-o)-o[open files only on Enter]'
+    '(-p)-p[copy selection to file]:file name'
+    '(-Q)-Q[disable quit confirmation]'
+    '(-r)-r[show cp, mv progress (Linux-only)]'
+    '(-R)-R[disable rollover at edges]'
+    '(-s)-s[load session]:session name'
+    '(-S)-S[start in disk usage analyzer mode]'
+    '(-t)-t[timeout to lock]:seconds'
+    '(-v)-v[use version compare to sort files]'
+    '(-V)-V[show program version and exit]'
+    '(-x)-x[notis, sel to system clipboard]'
+    '(-h)-h[show program help]'
+    '*:filename:_files'
+)
+_arguments -S -s $args

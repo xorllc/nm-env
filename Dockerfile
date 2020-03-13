@@ -14,6 +14,7 @@ RUN \
             pkg-config libfontconfig1-dev libfreetype6-dev \
             apt-utils pulseaudio \
             libgtk-3-dev libglib2.0-dev webkit2gtk-4.0 \
+            pkg-config libncursesw5-dev libreadline-dev \
             feh \
             man \
       &&  apt-get clean -y \
@@ -48,6 +49,13 @@ RUN cd dwm/ && make install && cd -
 # A modal web browser.
 COPY --chown=${NM_USER} vimb/ vimb/
 RUN cd vimb/ && make PREFIX=/usr && make PREFIX=/usr install && cd -
+
+# NNN, a file browser.
+COPY --chown=${NM_USER} nnn/ nnn/
+RUN cd nnn/ && make PREFIX=/usr strip install && cd -
+
+# File browser with vim-like navigation.
+RUN apt-get install -y ranger
 
 # Install wallpapers.
 COPY wallpapers/ wallpapers/
