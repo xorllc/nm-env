@@ -74,7 +74,6 @@ COPY --chown=${NM_USER} bjne/ bjne/
 RUN apt-get install scons libsdl1.2-dev libboost-all-dev build-essential -y
 RUN cd bjne/ && scons && cd -
 
-
 WORKDIR /
 ADD nxserver.sh /
 
