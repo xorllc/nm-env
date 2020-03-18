@@ -74,6 +74,10 @@ COPY --chown=${NM_USER} bjne/ bjne/
 RUN apt-get install scons libsdl1.2-dev libboost-all-dev build-essential -y
 RUN cd bjne/ && scons && cd -
 
+COPY --chown=${NM_USER} LaiNES/ LaiNES/
+RUN apt-get install clang scons libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev -y
+RUN cd LaiNES/ && scons && cd -
+
 WORKDIR /
 ADD nxserver.sh /
 
