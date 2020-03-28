@@ -78,7 +78,12 @@ COPY --chown=${NM_USER} LaiNES/ LaiNES/
 RUN apt-get install clang scons libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev -y
 RUN cd LaiNES/ && scons && cd -
 
+# Instructions to make caps-lock a control key.
+COPY .xmod .
+
 WORKDIR /
 ADD nxserver.sh /
+
+RUN apt-get install -y x11-xserver-utils
 
 ENTRYPOINT ["/nxserver.sh"]
