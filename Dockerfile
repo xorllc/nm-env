@@ -61,7 +61,8 @@ RUN apt-get install -y ranger
 COPY wallpapers/ wallpapers/
 
 # Other dotfiles.
-COPY --chown=${NM_USER} .xsessionrc .xsessionrc
+COPY --chown=${NM_USER} .xinitrc .xinitrc
+RUN  ln -s .xinitrc .xsessionrc
 COPY --chown=${NM_USER} .fehbg .fehbg
 COPY --chown=${NM_USER} .vim/ .vim/
 COPY --chown=${NM_USER} .vimrc .vimrc
@@ -69,7 +70,7 @@ COPY --chown=${NM_USER} .bashrc .bashrc
 COPY --chown=${NM_USER} .bash_profile .bash_profile
 COPY --chown=${NM_USER} Inconsolata-g.ttf .local/share/fonts/Inconsolata-g.ttf
 
-# NES emulator.
+# NES emulator(s).
 COPY --chown=${NM_USER} bjne/ bjne/
 RUN apt-get install scons libsdl1.2-dev libboost-all-dev build-essential -y
 RUN cd bjne/ && scons && cd -
@@ -79,11 +80,10 @@ RUN apt-get install clang scons libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev -y
 RUN cd LaiNES/ && scons && cd -
 
 # Instructions to make caps-lock a control key.
+RUN apt-get install -y x11-xserver-utils
 COPY .xmod .
 
 WORKDIR /
 ADD nxserver.sh /
-
-RUN apt-get install -y x11-xserver-utils
 
 ENTRYPOINT ["/nxserver.sh"]
