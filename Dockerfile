@@ -86,4 +86,10 @@ COPY .xmod .
 WORKDIR /
 ADD nxserver.sh /
 
+WORKDIR /home/${NM_USER}/
+RUN \
+        apt-get install libcurses-perl -y \
+    &&  cpan Term::Animation
+COPY --chown=${NM_USER} tomfoolery/ tomfoolery/
+
 ENTRYPOINT ["/nxserver.sh"]
