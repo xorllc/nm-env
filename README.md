@@ -13,3 +13,16 @@ The value 0x42 is the hex equivalent of the number printed from the `xev` comman
 
 ### Restarting dwm
 Execute `pkill -TERM dwm` after running `make clean && make install`.
+
+
+### Notes
+
+#### Host-level configuration
+
+On the host, don't do this!
+
+```
+setxkbmap -option caps:ctrl_modifier
+```
+
+Instead, run `xmodmap .xmod` in the same way that this codebase does on the host so it doesn't screw up nomachine.
