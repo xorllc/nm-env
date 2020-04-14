@@ -9,7 +9,7 @@ RUN \
           apt-get update \
       &&  apt-get upgrade -y \
       &&  apt-get install -y \
-            gcc make vim curl git \
+            gcc make vim curl git procps \
             libxinerama-dev libx11-dev libxft-dev \
             pkg-config libfontconfig1-dev libfreetype6-dev \
             apt-utils pulseaudio \

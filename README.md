@@ -10,3 +10,6 @@ add Control = Control_R
 ```
 
 The value 0x42 is the hex equivalent of the number printed from the `xev` command, which is in the x11-utils package. In other words, force 0x42 to be a Control_R character.
+
+### Restarting dwm
+Execute `pkill -TERM dwm` after running `make clean && make install`.
