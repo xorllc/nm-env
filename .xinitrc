@@ -1,5 +1,5 @@
-~/.fehbg &
 xmodmap .xmod &
 while :; do
-    ssh-agent dwm
+  ~/.fehbg &
+  ssh-agent dwm
 done
