@@ -16,7 +16,7 @@ RUN \
             libgtk-3-dev libglib2.0-dev webkit2gtk-4.0 \
             pkg-config libncursesw5-dev libreadline-dev \
             feh \
-            man \
+            man sudo \
       &&  apt-get clean -y \
       &&  apt-get autoclean -y \
       &&  apt-get autoremove -y
@@ -25,15 +25,16 @@ ENV NOMACHINE_VERSION 6.9
 ENV NOMACHINE_PACKAGE_NAME nomachine_6.9.2_1_amd64.deb
 ENV NOMACHINE_MD5 86fe9a0f9ee06ee6fce41aa36674f727
 
-RUN curl -fSL "http://download.nomachine.com/download/${NOMACHINE_VERSION}/Linux/${NOMACHINE_PACKAGE_NAME}" -o nomachine.deb \
-&& echo "Expected MD5:" ${NOMACHINE_MD5} \
-&& echo "${NOMACHINE_MD5} *nomachine.deb" | md5sum -c - \
-&& dpkg -i nomachine.deb \
-&& groupadd -r ${NM_GROUP} -g 433 \
-&& useradd -u 431 -r -g ${NM_GROUP} -d /home/${NM_USER} -s /bin/bash -c "NoMachine" ${NM_USER} \
-&& mkdir /home/${NM_USER} \
-&& chown -R ${NM_USER}:${NM_USER} /home/${NM_USER} \
-&& echo "${NM_USER}:${NM_USER}" | chpasswd
+RUN \
+          groupadd -r ${NM_GROUP} -g 433 \
+      &&  useradd -u 431 -r -g ${NM_GROUP} -g sudo -d /home/${NM_USER} -s /bin/bash -c "NoMachine" ${NM_USER} \
+      &&  mkdir /home/${NM_USER} \
+      &&  chown -R ${NM_USER}:${NM_USER} /home/${NM_USER} \
+      &&  echo "${NM_USER}:${NM_USER}" | chpasswd \
+      &&  curl -fSL "http://download.nomachine.com/download/${NOMACHINE_VERSION}/Linux/${NOMACHINE_PACKAGE_NAME}" -o nomachine.deb \
+      &&  echo "Expected MD5:" ${NOMACHINE_MD5} \
+      &&  echo "${NOMACHINE_MD5} *nomachine.deb" | md5sum -c - \
+      &&  dpkg -i nomachine.deb
 
 # Compile user tools and add dotfiles.
 WORKDIR /home/${NM_USER}/
