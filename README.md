@@ -40,3 +40,14 @@ Make sure you run `systemctl enable docker` so that Docker will run after login 
 
 May need to run `/usr/NX/bin/nxplayer` manually.
 Also may need to run build-and-run.sh to start the container as root, then exit back to the non-root user, and run ./build-and-run.sh as the non-root user.
+
+#### Pulseaudio
+
+On the host, install and run `pavucontrol`, run these commands:
+
+```
+rm -r ~/.config/pulse
+pulseaudio -k
+```
+
+then reboot. Source: `https://wiki.ubuntu.com/PulseAudio#Ubuntu_13.04.2BAC8-Raring_.28and_later.29`
